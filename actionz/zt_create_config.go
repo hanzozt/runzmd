@@ -25,9 +25,10 @@ import (
 	"strings"
 )
 
-type ZitiUpdateConfigAction struct{}
+// TODO: make this code more DRY
+type ZitiCreateConfigAction struct{}
 
-func (self *ZitiUpdateConfigAction) Execute(ctx *runzmd.ActionContext) error {
+func (self *ZitiCreateConfigAction) Execute(ctx *runzmd.ActionContext) error {
 	if strings.EqualFold("true", ctx.Headers["templatize"]) {
 		body, err := ctx.Runner.Template(ctx.Body)
 		if err != nil {
@@ -36,14 +37,15 @@ func (self *ZitiUpdateConfigAction) Execute(ctx *runzmd.ActionContext) error {
 		ctx.Body = body
 	}
 	name := ctx.Headers["name"]
+	configType := ctx.Headers["type"]
 
 	buf := &strings.Builder{}
 	buf.WriteString("About to execute:\n\n")
 
-	line := fmt.Sprintf("ziti edge update config %v --data '%v'", name, ctx.Body)
+	line := fmt.Sprintf("zt edge create config %v %v '%v'", name, configType, ctx.Body)
 	params := runzmd.ParseArgumentsWithStrings(line)
-	if params[0] != "ziti" {
-		return errors.Errorf("invalid parameter for ziti action, must start with 'ziti': %v", ctx.Body)
+	if params[0] != "zt" {
+		return errors.Errorf("invalid parameter for zt action, must start with 'zt': %v", ctx.Body)
 	}
 	params[0] = line
 	ctx.Runner.LeftPadBuilder(buf)
@@ -68,7 +70,7 @@ func (self *ZitiUpdateConfigAction) Execute(ctx *runzmd.ActionContext) error {
 	_, _ = c.Printf("$ %v\n", line)
 	done := false
 	for !done {
-		if err := runzmd.Exec(os.Args[0], colorStdOut, "edge", "update", "config", name, "--data", ctx.Body); err != nil {
+		if err := runzmd.Exec(os.Args[0], colorStdOut, "edge", "create", "config", name, configType, ctx.Body); err != nil {
 			if failOk {
 				return nil
 			}

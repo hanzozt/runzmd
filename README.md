@@ -4,7 +4,7 @@ A Go library for making runnable markdown tutorials, demos and setup scripts.
 It takes inspiration from the [Literate Programming](https://en.wikipedia.org/wiki/Literate_programming)
 paradigm.
 
-The library is used by the [Hanzo ZT](https://github.com/hanzozt/ziti) project
+The library is used by the [Hanzo ZT](https://github.com/hanzozt/zt) project
 for tutorials and examples.
 
 ## Overview
@@ -20,7 +20,7 @@ make a markdown tutorial runnable, then you get the following benefits:
 ## Where It Makes Sense
 
 While this library could be used for generalized scripts, it excels when
-wrapping a specific tool. The Hanzo ZT examples mostly use the `ziti` CLI.
+wrapping a specific tool. The Hanzo ZT examples mostly use the `zt` CLI.
 The actions used can be found in the actionz directory.
 
 While this library could be used for generalized scripting it hasn't been
@@ -29,11 +29,11 @@ optimized for that, and best suited for targeted use cases, like the above.
 ## In Action
 
 Here's an example of a markdown file being run. This is the
- [creating your first service](https://github.com/hanzozt/ziti/blob/v0.26.10/ziti/cmd/ziti/cmd/tutorial/tutorials/first-service.md)
- tutorial for [Hanzo ZT](https://github.com/hanzozt/ziti), which is the most 
+ [creating your first service](https://github.com/hanzozt/zt/blob/v0.26.10/zt/cmd/zt/cmd/tutorial/tutorials/first-service.md)
+ tutorial for [Hanzo ZT](https://github.com/hanzozt/zt), which is the most 
 involved example I have.  Below you can see the original markdown is on the left. 
 On the right is the markdown being executed. The markdown 
-[viewed in the browser](https://github.com/hanzozt/ziti/blob/v0.26.10/ziti/cmd/ziti/cmd/tutorial/tutorials/first-service.md) 
+[viewed in the browser](https://github.com/hanzozt/zt/blob/v0.26.10/zt/cmd/zt/cmd/tutorial/tutorials/first-service.md) 
 should still be usable on its own.
 
 ![example of runzmd running](./runzmd-first-service.gif "Running First Service Tutorial")

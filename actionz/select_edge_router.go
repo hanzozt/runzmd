@@ -58,7 +58,7 @@ func (self *SelectEdgeRouterAction) SelectEdgeRouter(ctx *runzmd.ActionContext) 
 	var edgeRouterName string
 
 	for !valid {
-		children, err := zitiList("edge", "list", "edge-routers", "-j", "limit none")
+		children, err := ztList("edge", "list", "edge-routers", "-j", "limit none")
 		if err != nil {
 			return errors.Wrap(err, "unable to list edge routers")
 		}

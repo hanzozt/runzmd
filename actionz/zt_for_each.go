@@ -58,7 +58,7 @@ func (self *ZitiForEach) Execute(ctx *runzmd.ActionContext) error {
 		maxCount = val
 	}
 
-	entities, err := zitiList(apiType, "list", entityType, "-j", filter)
+	entities, err := ztList(apiType, "list", entityType, "-j", filter)
 	if err != nil {
 		return err
 	}

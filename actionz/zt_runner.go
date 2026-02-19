@@ -21,14 +21,17 @@ import (
 	"github.com/fatih/color"
 	"github.com/hanzozt/runzmd"
 	"github.com/pkg/errors"
-	"os"
 	"strings"
 )
 
-// TODO: make this code more DRY
-type ZitiCreateConfigAction struct{}
+type ZitiRunnerAction struct{}
 
-func (self *ZitiCreateConfigAction) Execute(ctx *runzmd.ActionContext) error {
+func (self *ZitiRunnerAction) Execute(ctx *runzmd.ActionContext) error {
+	ztPath, err := getZitiPath()
+	if err != nil {
+		return err
+	}
+
 	if strings.EqualFold("true", ctx.Headers["templatize"]) {
 		body, err := ctx.Runner.Template(ctx.Body)
 		if err != nil {
@@ -36,22 +39,26 @@ func (self *ZitiCreateConfigAction) Execute(ctx *runzmd.ActionContext) error {
 		}
 		ctx.Body = body
 	}
-	name := ctx.Headers["name"]
-	configType := ctx.Headers["type"]
-
+	lines := strings.Split(ctx.Body, "\n")
+	var cmds [][]string
 	buf := &strings.Builder{}
 	buf.WriteString("About to execute:\n\n")
 
-	line := fmt.Sprintf("ziti edge create config %v %v '%v'", name, configType, ctx.Body)
-	params := runzmd.ParseArgumentsWithStrings(line)
-	if params[0] != "ziti" {
-		return errors.Errorf("invalid parameter for ziti action, must start with 'ziti': %v", ctx.Body)
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if len(line) > 0 {
+			params := runzmd.ParseArgumentsWithStrings(line)
+			if params[0] != "zt" {
+				return errors.Errorf("invalid parameter for zt action, must start with 'zt': %v", ctx.Body)
+			}
+			params[0] = line
+			cmds = append(cmds, params)
+			ctx.Runner.LeftPadBuilder(buf)
+			buf.WriteString("  ")
+			buf.WriteString(color.New(color.Bold).Sprint(line))
+			buf.WriteRune('\n')
+		}
 	}
-	params[0] = line
-	ctx.Runner.LeftPadBuilder(buf)
-	buf.WriteString("  ")
-	buf.WriteString(color.New(color.Bold).Sprint(line))
-	buf.WriteRune('\n')
 	buf.WriteRune('\n')
 	ctx.Runner.LeftPadBuilder(buf)
 	buf.WriteString("Continue [Y/N] (default Y): ")
@@ -67,27 +74,29 @@ func (self *ZitiCreateConfigAction) Execute(ctx *runzmd.ActionContext) error {
 
 	allowRetry := strings.EqualFold("true", ctx.Headers["allowRetry"])
 	failOk := strings.EqualFold("true", ctx.Headers["failOk"])
-	_, _ = c.Printf("$ %v\n", line)
-	done := false
-	for !done {
-		if err := runzmd.Exec(os.Args[0], colorStdOut, "edge", "create", "config", name, configType, ctx.Body); err != nil {
-			if failOk {
-				return nil
-			}
-			if allowRetry {
-				retry, err2 := runzmd.AskYesNoWithDefault(fmt.Sprintf("operation failed with err: %v. Retry [Y/N] (default Y):", err), true)
-				if err2 != nil {
-					fmt.Printf("error while asking about retry: %v\n", err2)
-					return err
+	for _, cmd := range cmds {
+		_, _ = c.Printf("$ %v\n", cmd[0])
+		done := false
+		for !done {
+			if err := runzmd.Exec(ztPath, colorStdOut, cmd[1:]...); err != nil {
+				if failOk {
+					return nil
 				}
-				if !retry {
+				if allowRetry {
+					retry, err2 := runzmd.AskYesNoWithDefault(fmt.Sprintf("operation failed with err: %v. Retry [Y/N] (default Y):", err), true)
+					if err2 != nil {
+						fmt.Printf("error while asking about retry: %v\n", err2)
+						return err
+					}
+					if !retry {
+						return err
+					}
+				} else {
 					return err
 				}
 			} else {
-				return err
+				done = true
 			}
-		} else {
-			done = true
 		}
 	}
 	return nil

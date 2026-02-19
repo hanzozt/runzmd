@@ -27,7 +27,7 @@ import (
 	"strings"
 )
 
-func zitiList(params ...string) ([]*gabs.Container, error) {
+func ztList(params ...string) ([]*gabs.Container, error) {
 	result, err := runZitiJson(params...)
 	if err != nil {
 		return nil, err
@@ -36,16 +36,16 @@ func zitiList(params ...string) ([]*gabs.Container, error) {
 }
 
 func getZitiPath() (string, error) {
-	zitiPath := os.Args[0]
-	if _, file := path.Split(zitiPath); file == "ziti" {
-		return zitiPath, nil
+	ztPath := os.Args[0]
+	if _, file := path.Split(ztPath); file == "zt" {
+		return ztPath, nil
 	}
 
-	zitiPath, err := exec.LookPath("ziti")
+	ztPath, err := exec.LookPath("zt")
 	if err != nil {
-		return "", errors.Wrap(err, "ziti executable not found in path")
+		return "", errors.Wrap(err, "zt executable not found in path")
 	}
-	return zitiPath, nil
+	return ztPath, nil
 }
 
 func runZitiJson(params ...string) (*gabs.Container, error) {
@@ -59,12 +59,12 @@ func runZitiJson(params ...string) (*gabs.Container, error) {
 	outCollector := &bytes.Buffer{}
 	cmd.Stdout = outCollector
 	if err = cmd.Run(); err != nil {
-		return nil, errors.Wrapf(err, "error running ziti command 'ziti %v'", strings.Join(params, " "))
+		return nil, errors.Wrapf(err, "error running zt command 'zt %v'", strings.Join(params, " "))
 	}
 
 	result, err := gabs.ParseJSON(outCollector.Bytes())
 	if err != nil {
-		return nil, errors.Wrapf(err, "error parsing JSON output from ziti command 'ziti %v'", strings.Join(params, " "))
+		return nil, errors.Wrapf(err, "error parsing JSON output from zt command 'zt %v'", strings.Join(params, " "))
 	}
 	return result, nil
 }

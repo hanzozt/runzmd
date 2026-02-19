@@ -31,7 +31,7 @@ type ZitiLoginAction struct {
 }
 
 func (self *ZitiLoginAction) Execute(ctx *runzmd.ActionContext) error {
-	cmd := "ziti edge login --ignore-config"
+	cmd := "zt edge login --ignore-config"
 	if self.LoginParams.GetControllerUrl() != "" {
 		cmd += " " + self.LoginParams.GetControllerUrl()
 	}
