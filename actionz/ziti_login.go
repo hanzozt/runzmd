@@ -17,7 +17,7 @@
 package actionz
 
 import (
-	"github.com/openziti/runzmd"
+	"github.com/hanzozt/runzmd"
 )
 
 type LoginParams interface {

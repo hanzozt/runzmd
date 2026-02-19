@@ -19,9 +19,9 @@ package runzmd
 import (
 	"bytes"
 	"fmt"
-	markdown "github.com/openziti/go-term-markdown"
+	markdown "github.com/hanzozt/go-term-markdown"
 	"github.com/fatih/color"
-	"github.com/openziti/foundation/v2/term"
+	"github.com/hanzozt/foundation/v2/term"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasttemplate"
 	"io"

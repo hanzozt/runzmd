@@ -18,8 +18,8 @@ package actionz
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/term"
-	"github.com/openziti/runzmd"
+	"github.com/hanzozt/foundation/v2/term"
+	"github.com/hanzozt/runzmd"
 	"github.com/pkg/errors"
 	"strconv"
 	"strings"

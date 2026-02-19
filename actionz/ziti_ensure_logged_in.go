@@ -18,7 +18,7 @@ package actionz
 
 import (
 	"fmt"
-	"github.com/openziti/runzmd"
+	"github.com/hanzozt/runzmd"
 )
 
 type ZitiEnsureLoggedIn struct {

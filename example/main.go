@@ -19,7 +19,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	"github.com/openziti/runzmd"
+	"github.com/hanzozt/runzmd"
 	"time"
 )
 

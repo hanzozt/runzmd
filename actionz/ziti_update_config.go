@@ -19,7 +19,7 @@ package actionz
 import (
 	"fmt"
 	"github.com/fatih/color"
-	"github.com/openziti/runzmd"
+	"github.com/hanzozt/runzmd"
 	"github.com/pkg/errors"
 	"os"
 	"strings"
