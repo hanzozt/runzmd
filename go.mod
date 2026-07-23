@@ -8,8 +8,8 @@ require (
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/alecthomas/chroma v0.10.0
 	github.com/fatih/color v1.18.0
-	github.com/hanzozt/foundation/v2 v2.0.87
-	github.com/hanzozt/go-term-markdown v1.0.1
+	github.com/hanzozt/foundation/v2 v2.0.88
+	github.com/hanzozt/go-term-markdown v1.0.2
 	github.com/pkg/errors v0.9.1
 	github.com/valyala/fasttemplate v1.2.2
 )
